@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
 :root {
   color-scheme: light;
 }
 
 body {
-  @apply bg-stone text-ink;
+  @apply bg-stone text-ink font-body;
+  background-image: radial-gradient(circle at top left, rgba(30, 76, 235, 0.12), transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(17, 24, 39, 0.06), transparent 45%);
 }
 
 input, select, textarea {

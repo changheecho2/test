@@ -8,6 +8,68 @@ import { Accompanist } from "../../lib/types";
 import { validateNoContact } from "../../lib/validation";
 
 const purposes = ["입시", "공연", "콩쿨", "레슨"];
+const mockAccompanists: Record<string, Accompanist> = {
+  "mock-1": {
+    uid: "mock-1",
+    displayName: "서윤아",
+    region: "서울",
+    specialties: ["성악", "뮤지컬"],
+    purposes: ["공연", "입시"],
+    priceMin: 70000,
+    priceMax: 140000,
+    bio: "오페라 & 뮤지컬 반주 8년. 리허설 동선과 템포 맞춤에 강합니다.",
+    education: "한국예술종합학교",
+    experience: "시립오페라단 객원",
+    portfolioLinks: [],
+    availableSlots: "평일 저녁, 주말 오후",
+    isPublic: true
+  },
+  "mock-2": {
+    uid: "mock-2",
+    displayName: "윤하린",
+    region: "경기",
+    specialties: ["바이올린", "실내악"],
+    purposes: ["콩쿨", "레슨"],
+    priceMin: 60000,
+    priceMax: 120000,
+    bio: "콩쿨 대비 템포/다이내믹 디렉션 가능합니다.",
+    education: "서울대학교",
+    experience: "국내 콩쿨 반주 다수",
+    portfolioLinks: [],
+    availableSlots: "주말 오전",
+    isPublic: true
+  },
+  "mock-3": {
+    uid: "mock-3",
+    displayName: "정민지",
+    region: "부산",
+    specialties: ["피아노", "합창"],
+    purposes: ["공연", "레슨"],
+    priceMin: 50000,
+    priceMax: 90000,
+    bio: "합창단 반주 경험이 풍부하고 합주 리딩에 익숙합니다.",
+    education: "부산예술대",
+    experience: "지역 합창단 전속 반주",
+    portfolioLinks: [],
+    availableSlots: "평일 오후",
+    isPublic: true
+  },
+  "mock-4": {
+    uid: "mock-4",
+    displayName: "홍지운",
+    region: "대전",
+    specialties: ["첼로", "클래식"],
+    purposes: ["입시", "콩쿨"],
+    priceMin: 80000,
+    priceMax: 160000,
+    bio: "입시 곡목 빠른 초견 가능, 당일 리허설 옵션 제공.",
+    education: "연세대학교",
+    experience: "입시 전문 반주 5년",
+    portfolioLinks: [],
+    availableSlots: "주중 낮",
+    isPublic: true
+  }
+};
 
 export default function AccompanistPage() {
   const [uid, setUid] = useState<string | null>(null);
@@ -50,11 +112,21 @@ export default function AccompanistPage() {
       try {
         const db = getDbClient();
         if (!db) {
+          const mock = mockAccompanists[uid];
+          if (mock) {
+            setData(mock);
+            return;
+          }
           setError("현재 설정으로 프로필을 불러올 수 없습니다.");
           return;
         }
         const snap = await getDoc(doc(db, "accompanists", uid));
         if (!snap.exists()) {
+          const mock = mockAccompanists[uid];
+          if (mock) {
+            setData(mock);
+            return;
+          }
           setError("해당 반주자를 찾을 수 없습니다.");
           return;
         }
@@ -152,7 +224,7 @@ export default function AccompanistPage() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-      <section className="rounded-xl bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
         <h1 className="text-2xl font-semibold">{data.displayName}</h1>
         <p className="mt-2 text-sm text-muted">{data.region}</p>
         <div className="mt-4 space-y-3 text-sm">
@@ -189,7 +261,7 @@ export default function AccompanistPage() {
         </div>
       </section>
 
-      <section className="rounded-xl bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold">요청서 보내기</h2>
         <p className="mt-2 text-xs text-muted">
           연락처는 결제 승인 후에만 공개됩니다. 무료 텍스트에 연락처를 입력할 수 없습니다.

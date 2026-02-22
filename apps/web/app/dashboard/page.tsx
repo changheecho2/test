@@ -115,12 +115,12 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {!authClient && (
-        <div className="rounded-xl bg-white p-4 text-sm text-muted">
+        <div className="rounded-2xl border border-line bg-white p-4 text-sm text-muted">
           Firebase 설정이 아직 완료되지 않았습니다. Cloudflare 환경 변수에 Firebase 값을 추가해 주세요.
         </div>
       )}
       {!user && (
-        <section className="rounded-xl bg-white p-6 shadow-sm">
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
           <h1 className="text-xl font-semibold">반주자 로그인</h1>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             <div className="flex flex-col gap-1">
@@ -145,7 +145,7 @@ export default function DashboardPage() {
       )}
 
       {user && profile && (
-        <section className="rounded-xl bg-white p-6 shadow-sm">
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-semibold">반주자 프로필</h1>
             <button className="border border-black/10" onClick={() => authClient && signOut(authClient)}>
@@ -260,7 +260,7 @@ export default function DashboardPage() {
       )}
 
       {user && (
-        <section className="rounded-xl bg-white p-6 shadow-sm">
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
           <h2 className="text-lg font-semibold">요청서함</h2>
           <div className="mt-4 space-y-3">
             {requests.map((request) => (

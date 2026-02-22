@@ -126,7 +126,7 @@ export default function RequestDetailPage() {
   if (loading || !request) return <div>로딩 중...</div>;
 
   return (
-    <div className="rounded-xl bg-white p-6 shadow-sm space-y-4">
+    <div className="rounded-2xl border border-line bg-white p-6 shadow-sm space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">요청서 상세</h1>
         <span className="text-xs text-muted">상태: {request.status}</span>

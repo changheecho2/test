@@ -7,6 +7,68 @@ import { getDbClient } from "../lib/firebaseClient";
 import { Accompanist } from "../lib/types";
 
 const purposes = ["입시", "공연", "콩쿨", "레슨"];
+const mockAccompanists: Accompanist[] = [
+  {
+    uid: "mock-1",
+    displayName: "서윤아",
+    region: "서울",
+    specialties: ["성악", "뮤지컬"],
+    purposes: ["공연", "입시"],
+    priceMin: 70000,
+    priceMax: 140000,
+    bio: "오페라 & 뮤지컬 반주 8년. 리허설 동선과 템포 맞춤에 강합니다.",
+    education: "한국예술종합학교",
+    experience: "시립오페라단 객원",
+    portfolioLinks: [],
+    availableSlots: "평일 저녁, 주말 오후",
+    isPublic: true
+  },
+  {
+    uid: "mock-2",
+    displayName: "윤하린",
+    region: "경기",
+    specialties: ["바이올린", "실내악"],
+    purposes: ["콩쿨", "레슨"],
+    priceMin: 60000,
+    priceMax: 120000,
+    bio: "콩쿨 대비 템포/다이내믹 디렉션 가능합니다.",
+    education: "서울대학교",
+    experience: "국내 콩쿨 반주 다수",
+    portfolioLinks: [],
+    availableSlots: "주말 오전",
+    isPublic: true
+  },
+  {
+    uid: "mock-3",
+    displayName: "정민지",
+    region: "부산",
+    specialties: ["피아노", "합창"],
+    purposes: ["공연", "레슨"],
+    priceMin: 50000,
+    priceMax: 90000,
+    bio: "합창단 반주 경험이 풍부하고 합주 리딩에 익숙합니다.",
+    education: "부산예술대",
+    experience: "지역 합창단 전속 반주",
+    portfolioLinks: [],
+    availableSlots: "평일 오후",
+    isPublic: true
+  },
+  {
+    uid: "mock-4",
+    displayName: "홍지운",
+    region: "대전",
+    specialties: ["첼로", "클래식"],
+    purposes: ["입시", "콩쿨"],
+    priceMin: 80000,
+    priceMax: 160000,
+    bio: "입시 곡목 빠른 초견 가능, 당일 리허설 옵션 제공.",
+    education: "연세대학교",
+    experience: "입시 전문 반주 5년",
+    portfolioLinks: [],
+    availableSlots: "주중 낮",
+    isPublic: true
+  }
+];
 
 export default function HomePage() {
   const [items, setItems] = useState<Accompanist[]>([]);
@@ -19,11 +81,14 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       const db = getDbClient();
-      if (!db) return;
+      if (!db) {
+        setItems(mockAccompanists);
+        return;
+      }
       const q = query(collection(db, "accompanists"), where("isPublic", "==", true));
       const snap = await getDocs(q);
       const data = snap.docs.map((doc) => ({ uid: doc.id, ...(doc.data() as Omit<Accompanist, "uid">) }));
-      setItems(data);
+      setItems(data.length ? data : mockAccompanists);
     };
 
     fetchData();
@@ -41,13 +106,43 @@ export default function HomePage() {
   }, [items, region, purpose, specialty, priceMin, priceMax]);
 
   return (
-    <div className="space-y-6">
-      <section className="rounded-xl bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold">반주자 목록</h1>
-        <p className="mt-2 text-sm text-muted">
-          목적, 지역, 비용 범위를 선택해 적합한 반주자를 찾아보세요.
-        </p>
-        <div className="mt-4 grid gap-3 md:grid-cols-5">
+    <div className="space-y-8">
+      <section className="rounded-2xl border border-line bg-gradient-to-br from-white via-white to-accentSoft/60 p-6 shadow-sm">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Ensemble</p>
+            <h1 className="mt-2 text-3xl font-display font-semibold md:text-4xl">
+              무대가 필요할 때, 반주자는 앙코르메이트
+            </h1>
+            <p className="mt-3 max-w-xl text-sm text-muted">
+              목적, 일정, 예산에 맞는 반주자를 빠르게 찾고 요청서를 보내세요. 수락 후에만 연락처가
+              공개됩니다.
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <div className="rounded-xl bg-white px-4 py-3 text-center shadow-sm">
+              <div className="text-lg font-semibold">24시간</div>
+              <div className="text-xs text-muted">평균 응답</div>
+            </div>
+            <div className="rounded-xl bg-white px-4 py-3 text-center shadow-sm">
+              <div className="text-lg font-semibold">200+</div>
+              <div className="text-xs text-muted">예상 매칭</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-xl font-semibold">반주자 탐색</h2>
+            <p className="mt-1 text-sm text-muted">
+              목적, 지역, 비용 범위를 선택해 적합한 반주자를 찾아보세요.
+            </p>
+          </div>
+          <p className="text-xs text-muted">현재는 데모 목록이 포함되어 있습니다.</p>
+        </div>
+        <div className="mt-5 grid gap-3 md:grid-cols-5">
           <div className="flex flex-col gap-1">
             <label>지역</label>
             <input value={region} onChange={(e) => setRegion(e.target.value)} placeholder="예: 서울" />
@@ -80,15 +175,19 @@ export default function HomePage() {
 
       <section className="grid gap-4 md:grid-cols-2">
         {filtered.map((item) => (
-          <Link key={item.uid} href={`/a?uid=${item.uid}`} className="rounded-xl bg-white p-6 shadow-sm">
+          <Link
+            key={item.uid}
+            href={`/a?uid=${item.uid}`}
+            className="group rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+          >
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">{item.displayName}</h2>
-              <span className="text-xs text-muted">{item.region}</span>
+              <h3 className="text-lg font-semibold">{item.displayName}</h3>
+              <span className="rounded-full bg-sand px-3 py-1 text-xs text-muted">{item.region}</span>
             </div>
             <p className="mt-2 text-sm text-muted">{item.bio || "소개가 아직 없습니다."}</p>
             <div className="mt-4 flex flex-wrap gap-2 text-xs">
               {item.purposes.map((p) => (
-                <span key={p} className="rounded-full bg-stone px-3 py-1">
+                <span key={p} className="rounded-full bg-accentSoft px-3 py-1 text-ink">
                   {p}
                 </span>
               ))}
@@ -98,13 +197,18 @@ export default function HomePage() {
                 </span>
               ))}
             </div>
-            <div className="mt-4 text-sm font-semibold">
-              {item.priceMin.toLocaleString()}원 ~ {item.priceMax.toLocaleString()}원
+            <div className="mt-4 flex items-center justify-between text-sm font-semibold">
+              <span>
+                {item.priceMin.toLocaleString()}원 ~ {item.priceMax.toLocaleString()}원
+              </span>
+              <span className="text-xs font-medium text-muted group-hover:text-ink">프로필 보기 →</span>
             </div>
           </Link>
         ))}
         {filtered.length === 0 && (
-          <div className="rounded-xl bg-white p-6 text-sm text-muted">조건에 맞는 반주자가 없습니다.</div>
+          <div className="rounded-2xl border border-dashed border-line bg-white p-6 text-sm text-muted">
+            조건에 맞는 반주자가 없습니다.
+          </div>
         )}
       </section>
     </div>
