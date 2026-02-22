@@ -31,6 +31,7 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
     note: "",
     contactEmail: ""
   });
+  const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === "1";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +80,10 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
     const message = validate();
     if (message) {
       setSubmitMessage(message);
+      return;
+    }
+    if (isTestMode) {
+      setSubmitMessage("테스트 단계로 실제 전송은 되지 않습니다. 입력 경험만 확인해 주세요.");
       return;
     }
     try {
@@ -167,6 +172,11 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
         <p className="mt-2 text-xs text-muted">
           연락처는 결제 승인 후에만 공개됩니다. 무료 텍스트에 연락처를 입력할 수 없습니다.
         </p>
+        {isTestMode && (
+          <p className="mt-1 text-xs text-muted">
+            현재는 테스트 단계로 실제 전송은 되지 않습니다.
+          </p>
+        )}
         <div className="mt-4 space-y-3">
           <div className="flex flex-col gap-1">
             <label>목적</label>

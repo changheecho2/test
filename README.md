@@ -47,6 +47,7 @@ Firebase CLI로 배포/에뮬레이터 실행을 진행하세요.
 - `NEXT_PUBLIC_FIREBASE_APP_ID`
 - `NEXT_PUBLIC_FUNCTIONS_REGION` (기본: `asia-northeast3`)
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+- `NEXT_PUBLIC_TEST_MODE` (기본: `1`이면 요청서 전송은 UX 확인용으로만 동작)
 
 ### Functions (`functions/.env`)
 
