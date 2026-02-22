@@ -114,7 +114,7 @@ export default function HomePage() {
         <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Ensemble</p>
-            <h1 className="mt-2 text-3xl font-display font-semibold md:text-4xl">
+            <h1 className="mt-2 text-3xl font-display font-semibold md:text-4xl text-ink dark:text-[#f8f2ec]">
               오늘 필요한 반주자를 24시간 안에
             </h1>
             <p className="mt-3 max-w-xl text-sm text-muted dark:text-[#cdbfb3]">
