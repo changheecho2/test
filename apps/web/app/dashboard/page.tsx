@@ -137,7 +137,7 @@ export default function DashboardPage() {
             <button className="bg-ink text-white" onClick={() => handleAuth("login")}>
               로그인
             </button>
-            <button className="border border-black/10" onClick={() => handleAuth("signup")}>
+            <button className="border border-black/10 bg-white" onClick={() => handleAuth("signup")}>
               회원가입
             </button>
           </div>

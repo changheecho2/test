@@ -107,17 +107,24 @@ export default function HomePage() {
 
   return (
     <div className="space-y-8">
-      <section className="rounded-2xl border border-line bg-gradient-to-br from-white via-white to-accentSoft/60 p-6 shadow-sm">
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <section className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-white via-white to-accentSoft/70 p-6 shadow-sm">
+        <div className="pointer-events-none absolute -right-16 top-6 h-40 w-40 rounded-full bg-accent/20 blur-3xl" />
+        <div className="pointer-events-none absolute -left-10 bottom-6 h-32 w-32 rounded-full bg-night/10 blur-3xl" />
+        <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Ensemble</p>
             <h1 className="mt-2 text-3xl font-display font-semibold md:text-4xl">
-              무대가 필요할 때, 반주자는 앙코르메이트
+              오늘 필요한 반주자를 24시간 안에
             </h1>
             <p className="mt-3 max-w-xl text-sm text-muted">
-              목적, 일정, 예산에 맞는 반주자를 빠르게 찾고 요청서를 보내세요. 수락 후에만 연락처가
-              공개됩니다.
+              목적·일정·예산에 맞는 반주자를 즉시 찾고 요청서를 보내세요. 수락 후에만 연락처가
+              공개됩니다. 빠른 매칭을 위해 응답 속도와 전문 분야를 함께 보여드립니다.
             </p>
+            <div className="mt-4 flex flex-wrap gap-2 text-xs">
+              <span className="rounded-full bg-night px-3 py-1 text-white">연락처 보호</span>
+              <span className="rounded-full bg-accent px-3 py-1 text-white">빠른 수락 흐름</span>
+              <span className="rounded-full bg-sand px-3 py-1 text-muted">모바일 최적화</span>
+            </div>
           </div>
           <div className="flex gap-3">
             <div className="rounded-xl bg-white px-4 py-3 text-center shadow-sm">
@@ -178,7 +185,7 @@ export default function HomePage() {
           <Link
             key={item.uid}
             href={`/a?uid=${item.uid}`}
-            className="group rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            className="group rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-night/30 hover:shadow-md"
           >
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">{item.displayName}</h3>

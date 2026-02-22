@@ -14,6 +14,10 @@ body {
     radial-gradient(circle at 20% 80%, rgba(17, 24, 39, 0.06), transparent 45%);
 }
 
+main {
+  padding-bottom: 96px;
+}
+
 input, select, textarea {
   @apply border border-black/10 rounded-md px-3 py-2 bg-white text-sm;
 }

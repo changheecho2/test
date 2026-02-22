@@ -34,6 +34,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
         <main className="mx-auto max-w-6xl px-6 py-10">{children}</main>
+        <div className="fixed bottom-4 left-0 right-0 z-40 px-4 md:hidden">
+          <div className="flex items-center justify-between rounded-full border border-line bg-white/90 px-4 py-3 shadow-lg backdrop-blur">
+            <Link href="/" className="text-xs font-semibold text-ink">
+              반주자 찾기
+            </Link>
+            <Link href="/dashboard" className="rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white">
+              대시보드
+            </Link>
+          </div>
+        </div>
       </body>
     </html>
   );
