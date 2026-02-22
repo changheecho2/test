@@ -108,7 +108,7 @@ export default function HomePage() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-white via-white to-stone/60 p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
+      <section className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-white via-white to-stone/60 p-6 shadow-sm dark:border-white/10 dark:bg-[#14100e]">
         <div className="pointer-events-none absolute -right-16 top-6 h-40 w-40 rounded-full bg-cocoa/20 blur-3xl dark:bg-cocoa/40" />
         <div className="pointer-events-none absolute -left-10 bottom-6 h-32 w-32 rounded-full bg-ink/15 blur-3xl dark:bg-ink/35" />
         <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -117,7 +117,7 @@ export default function HomePage() {
             <h1 className="mt-2 text-3xl font-display font-semibold md:text-4xl">
               오늘 필요한 반주자를 24시간 안에
             </h1>
-            <p className="mt-3 max-w-xl text-sm text-muted">
+            <p className="mt-3 max-w-xl text-sm text-muted dark:text-[#cdbfb3]">
               목적·일정·예산에 맞는 반주자를 즉시 찾고 요청서를 보내세요. 수락 후에만 연락처가
               공개됩니다. 빠른 매칭을 위해 응답 속도와 전문 분야를 함께 보여드립니다.
             </p>
@@ -142,15 +142,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#14100e]">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-xl font-semibold">반주자 탐색</h2>
-            <p className="mt-1 text-sm text-muted">
+            <p className="mt-1 text-sm text-muted dark:text-[#cdbfb3]">
               목적, 지역, 비용 범위를 선택해 적합한 반주자를 찾아보세요.
             </p>
           </div>
-          <p className="text-xs text-muted">현재는 데모 목록이 포함되어 있습니다.</p>
+          <p className="text-xs text-muted dark:text-[#b9aa9e]">현재는 데모 목록이 포함되어 있습니다.</p>
         </div>
         <div className="mt-5 grid gap-3 md:grid-cols-5">
           <div className="flex flex-col gap-1">
@@ -195,20 +195,22 @@ export default function HomePage() {
           <Link
             key={item.uid}
             href={`/a?uid=${item.uid}`}
-            className="group rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-night/30 hover:shadow-md dark:border-white/10 dark:bg-[#15110f] dark:hover:border-white/30"
+            className="group rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-night/30 hover:shadow-md dark:border-white/10 dark:bg-[#14100e] dark:hover:border-[#c9a483]/60"
           >
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">{item.displayName}</h3>
-              <span className="rounded-full bg-sand px-3 py-1 text-xs text-muted dark:bg-[#1f1915] dark:text-[#c9bfb6]">
+              <span className="rounded-full bg-sand px-3 py-1 text-xs text-muted dark:bg-[#1c1613] dark:text-[#d6c8bd]">
                 {item.region}
               </span>
             </div>
-            <p className="mt-2 text-sm text-muted">{item.bio || "소개가 아직 없습니다."}</p>
+            <p className="mt-2 text-sm text-muted dark:text-[#cdbfb3]">
+              {item.bio || "소개가 아직 없습니다."}
+            </p>
             <div className="mt-4 flex flex-wrap gap-2 text-xs">
               {item.purposes.map((p) => (
                 <span
                   key={p}
-                  className="rounded-full bg-sand px-3 py-1 text-ink dark:bg-[#1f1915] dark:text-[#f4efe9]"
+                  className="rounded-full bg-sand px-3 py-1 text-ink dark:bg-[#1c1613] dark:text-[#f4efe9]"
                 >
                   {p}
                 </span>
@@ -216,7 +218,7 @@ export default function HomePage() {
               {item.specialties.map((s) => (
                 <span
                   key={s}
-                  className="rounded-full bg-stone px-3 py-1 text-cocoa dark:bg-[#120f0d] dark:text-[#d9cfc6]"
+                  className="rounded-full bg-stone px-3 py-1 text-cocoa dark:bg-[#0f0c0a] dark:text-[#e0d5cc]"
                 >
                   {s}
                 </span>
@@ -226,14 +228,14 @@ export default function HomePage() {
               <span>
                 {item.priceMin.toLocaleString()}원 ~ {item.priceMax.toLocaleString()}원
               </span>
-              <span className="text-xs font-medium text-muted group-hover:text-cocoa dark:group-hover:text-[#f4efe9]">
+              <span className="text-xs font-medium text-muted group-hover:text-cocoa dark:text-[#cdbfb3] dark:group-hover:text-[#f4efe9]">
                 프로필 보기 →
               </span>
             </div>
           </Link>
         ))}
         {filtered.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-line bg-white p-6 text-sm text-muted dark:border-white/10 dark:bg-[#15110f]">
+          <div className="rounded-2xl border border-dashed border-line bg-white p-6 text-sm text-muted dark:border-white/10 dark:bg-[#14100e] dark:text-[#cdbfb3]">
             조건에 맞는 반주자가 없습니다.
           </div>
         )}

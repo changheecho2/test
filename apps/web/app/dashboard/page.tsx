@@ -189,12 +189,12 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {!authClient && (
-        <div className="rounded-2xl border border-line bg-white p-4 text-sm text-muted dark:border-white/10 dark:bg-[#15110f]">
+        <div className="rounded-2xl border border-line bg-white p-4 text-sm text-muted dark:border-white/10 dark:bg-[#14100e] dark:text-[#cdbfb3]">
           Firebase 설정이 아직 완료되지 않았습니다. Cloudflare 환경 변수에 Firebase 값을 추가해 주세요.
         </div>
       )}
       {!user && !testLoggedIn && (
-        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#14100e]">
           <h1 className="text-xl font-semibold">반주자 로그인</h1>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             <div className="flex flex-col gap-1">
@@ -215,7 +215,7 @@ export default function DashboardPage() {
               회원가입
             </button>
             {isTestMode && !authClient && (
-              <button className="border border-black/10 bg-white text-ink" onClick={() => handleAuth("login")}>
+              <button className="border border-black/10 bg-white text-ink dark:border-white/20 dark:bg-[#1b1512] dark:text-[#f4efe9]" onClick={() => handleAuth("login")}>
                 테스트 로그인
               </button>
             )}
@@ -224,7 +224,7 @@ export default function DashboardPage() {
       )}
 
       {(user || testLoggedIn) && profile && (
-        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#14100e]">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-semibold">반주자 프로필</h1>
             {!testLoggedIn && (
@@ -334,28 +334,28 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="mt-6 grid gap-3 md:grid-cols-3">
-            <div className="rounded-xl border border-line bg-sand px-4 py-3 text-sm dark:border-white/10 dark:bg-[#1b1512]">
-              <div className="text-xs text-muted">평균 응답</div>
+            <div className="rounded-xl border border-line bg-sand px-4 py-3 text-sm dark:border-white/10 dark:bg-[#1a1411]">
+              <div className="text-xs text-muted dark:text-[#cdbfb3]">평균 응답</div>
               <div className="text-lg font-semibold">24시간 이내</div>
             </div>
-            <div className="rounded-xl border border-line bg-sand px-4 py-3 text-sm dark:border-white/10 dark:bg-[#1b1512]">
-              <div className="text-xs text-muted">최근 요청</div>
+            <div className="rounded-xl border border-line bg-sand px-4 py-3 text-sm dark:border-white/10 dark:bg-[#1a1411]">
+              <div className="text-xs text-muted dark:text-[#cdbfb3]">최근 요청</div>
               <div className="text-lg font-semibold">{requests.length}건</div>
             </div>
-            <div className="rounded-xl border border-line bg-sand px-4 py-3 text-sm dark:border-white/10 dark:bg-[#1b1512]">
-              <div className="text-xs text-muted">공개 상태</div>
+            <div className="rounded-xl border border-line bg-sand px-4 py-3 text-sm dark:border-white/10 dark:bg-[#1a1411]">
+              <div className="text-xs text-muted dark:text-[#cdbfb3]">공개 상태</div>
               <div className="text-lg font-semibold">{profile.isPublic ? "공개" : "비공개"}</div>
             </div>
           </div>
           {profileMessage && <p className="mt-2 text-sm text-rose-600">{profileMessage}</p>}
-          <button className="mt-4 bg-cocoa text-white" onClick={saveProfile}>
+          <button className="mt-4 bg-cocoa text-white dark:bg-[#c9a483] dark:text-[#1b140f]" onClick={saveProfile}>
             프로필 저장
           </button>
         </section>
       )}
 
       {(user || testLoggedIn) && (
-        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
+        <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#14100e]">
           <h2 className="text-lg font-semibold">요청서함</h2>
           <div className="mt-4 space-y-3">
             {requests.map((request) => (

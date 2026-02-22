@@ -126,7 +126,7 @@ export default function RequestDetailPage() {
   if (loading || !request) return <div>로딩 중...</div>;
 
   return (
-    <div className="rounded-2xl border border-line bg-white p-6 shadow-sm space-y-4 dark:border-white/10 dark:bg-[#15110f]">
+    <div className="rounded-2xl border border-line bg-white p-6 shadow-sm space-y-4 dark:border-white/10 dark:bg-[#14100e]">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">요청서 상세</h1>
         <span className="text-xs text-muted">상태: {request.status}</span>
@@ -177,20 +177,20 @@ export default function RequestDetailPage() {
         <div className="font-semibold">전달사항</div>
         <div className="text-muted">{request.note || "-"}</div>
       </div>
-      <div className="rounded-lg border border-dashed border-black/20 p-4 text-sm">
+      <div className="rounded-lg border border-dashed border-black/20 p-4 text-sm dark:border-white/20">
         <div className="font-semibold">연락처</div>
-        <div className="mt-1 text-muted">
+        <div className="mt-1 text-muted dark:text-[#cdbfb3]">
           {request.contactUnlocked ? contact || "연락처 로딩 중..." : "결제 완료 후 공개됩니다."}
         </div>
       </div>
-      <p className="text-xs text-muted">테스트 모드에서는 결제 없이 즉시 수락됩니다.</p>
+      <p className="text-xs text-muted dark:text-[#b9aa9e]">테스트 모드에서는 결제 없이 즉시 수락됩니다.</p>
       {message && <p className="text-sm text-rose-600">{message}</p>}
       {request.status === "pending" && (
         <div className="flex gap-2">
-          <button className="bg-cocoa text-white" onClick={handleAccept}>
+          <button className="bg-cocoa text-white dark:bg-[#c9a483] dark:text-[#1b140f]" onClick={handleAccept}>
             수락하기 (1만원 결제)
           </button>
-          <button className="border border-black/10" onClick={handleReject}>
+          <button className="border border-black/10 dark:border-white/20" onClick={handleReject}>
             거절하기
           </button>
         </div>

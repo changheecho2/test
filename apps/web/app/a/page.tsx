@@ -223,7 +223,7 @@ export default function AccompanistPage() {
   if (loading) return <div>로딩 중...</div>;
   if (error) {
     return (
-      <div className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
+      <div className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#14100e]">
         <h1 className="text-lg font-semibold">반주자 프로필 미리보기</h1>
         <p className="mt-2 text-sm text-muted">
           주소가 올바르지 않거나 현재는 테스트 데이터만 준비되어 있습니다.
@@ -246,33 +246,33 @@ export default function AccompanistPage() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#14100e]">
         <h1 className="text-2xl font-semibold">{data.displayName}</h1>
         <p className="mt-2 text-sm text-muted">{data.region}</p>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
-          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1b1512]">
-            <div className="text-xs text-muted">소개</div>
-            <div className="mt-2 text-sm text-muted">{data.bio || "소개가 아직 없습니다."}</div>
+          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1a1411]">
+            <div className="text-xs text-muted dark:text-[#cdbfb3]">소개</div>
+            <div className="mt-2 text-sm text-muted dark:text-[#e0d5cc]">{data.bio || "소개가 아직 없습니다."}</div>
           </div>
-          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1b1512]">
-            <div className="text-xs text-muted">가능 일정</div>
-            <div className="mt-2 text-sm text-muted">{data.availableSlots || "협의"}</div>
+          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1a1411]">
+            <div className="text-xs text-muted dark:text-[#cdbfb3]">가능 일정</div>
+            <div className="mt-2 text-sm text-muted dark:text-[#e0d5cc]">{data.availableSlots || "협의"}</div>
           </div>
-          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1b1512]">
-            <div className="text-xs text-muted">학력</div>
-            <div className="mt-2 text-sm text-muted">{data.education || "-"}</div>
+          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1a1411]">
+            <div className="text-xs text-muted dark:text-[#cdbfb3]">학력</div>
+            <div className="mt-2 text-sm text-muted dark:text-[#e0d5cc]">{data.education || "-"}</div>
           </div>
-          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1b1512]">
-            <div className="text-xs text-muted">경력</div>
-            <div className="mt-2 text-sm text-muted">{data.experience || "-"}</div>
+          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1a1411]">
+            <div className="text-xs text-muted dark:text-[#cdbfb3]">경력</div>
+            <div className="mt-2 text-sm text-muted dark:text-[#e0d5cc]">{data.experience || "-"}</div>
           </div>
         </div>
-        <div className="mt-4 rounded-xl border border-line bg-white p-4 text-sm dark:border-white/10 dark:bg-[#15110f]">
+        <div className="mt-4 rounded-xl border border-line bg-white p-4 text-sm dark:border-white/10 dark:bg-[#14100e]">
           <div className="flex flex-wrap gap-2">
             {data.purposes.map((p) => (
               <span
                 key={p}
-                className="rounded-full bg-sand px-3 py-1 text-xs text-ink dark:bg-[#1f1915] dark:text-[#f4efe9]"
+                className="rounded-full bg-sand px-3 py-1 text-xs text-ink dark:bg-[#1c1613] dark:text-[#f4efe9]"
               >
                 {p}
               </span>
@@ -280,25 +280,25 @@ export default function AccompanistPage() {
             {data.specialties.map((s) => (
               <span
                 key={s}
-                className="rounded-full bg-stone px-3 py-1 text-xs text-cocoa dark:bg-[#120f0d] dark:text-[#d9cfc6]"
+                className="rounded-full bg-stone px-3 py-1 text-xs text-cocoa dark:bg-[#0f0c0a] dark:text-[#e0d5cc]"
               >
                 {s}
               </span>
             ))}
-            <span className="rounded-full bg-sand px-3 py-1 text-xs text-muted dark:bg-[#1f1915] dark:text-[#c9bfb6]">
+            <span className="rounded-full bg-sand px-3 py-1 text-xs text-muted dark:bg-[#1c1613] dark:text-[#d6c8bd]">
               {data.priceMin.toLocaleString()}원 ~ {data.priceMax.toLocaleString()}원
             </span>
           </div>
         </div>
       </section>
 
-      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#14100e]">
         <h2 className="text-lg font-semibold">요청서 보내기</h2>
-        <p className="mt-2 text-xs text-muted">
+        <p className="mt-2 text-xs text-muted dark:text-[#b9aa9e]">
           연락처는 결제 승인 후에만 공개됩니다. 무료 텍스트에 연락처를 입력할 수 없습니다.
         </p>
         {isTestMode && (
-          <p className="mt-1 text-xs text-muted">현재는 테스트 단계로 실제 전송은 되지 않습니다.</p>
+          <p className="mt-1 text-xs text-muted dark:text-[#b9aa9e]">현재는 테스트 단계로 실제 전송은 되지 않습니다.</p>
         )}
         <div className="mt-4 space-y-3">
           <div className="flex flex-col gap-1">
@@ -423,7 +423,7 @@ export default function AccompanistPage() {
             />
           </div>
           {submitMessage && <p className="text-sm text-rose-600">{submitMessage}</p>}
-          <button className="w-full bg-cocoa text-white" onClick={submit}>
+          <button className="w-full bg-cocoa text-white dark:bg-[#c9a483] dark:text-[#1b140f]" onClick={submit}>
             요청서 제출
           </button>
         </div>
