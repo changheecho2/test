@@ -7,10 +7,11 @@ import { getDbClient } from "../lib/firebaseClient";
 import { Accompanist } from "../lib/types";
 
 const purposes = ["입시", "공연", "콩쿨", "레슨"];
+const regions = ["서울", "경기", "인천", "부산", "대전", "대구", "광주", "온라인"];
 const mockAccompanists: Accompanist[] = [
   {
     uid: "mock-1",
-    displayName: "반주자 A",
+    displayName: "우아한 모차르트",
     region: "서울",
     specialties: ["성악", "뮤지컬"],
     purposes: ["공연", "입시"],
@@ -25,7 +26,7 @@ const mockAccompanists: Accompanist[] = [
   },
   {
     uid: "mock-2",
-    displayName: "반주자 B",
+    displayName: "담백한 베토벤",
     region: "경기",
     specialties: ["바이올린", "실내악"],
     purposes: ["콩쿨", "레슨"],
@@ -40,7 +41,7 @@ const mockAccompanists: Accompanist[] = [
   },
   {
     uid: "mock-3",
-    displayName: "반주자 C",
+    displayName: "섬세한 드뷔시",
     region: "부산",
     specialties: ["피아노", "합창"],
     purposes: ["공연", "레슨"],
@@ -55,7 +56,7 @@ const mockAccompanists: Accompanist[] = [
   },
   {
     uid: "mock-4",
-    displayName: "반주자 D",
+    displayName: "단정한 쇼팽",
     region: "대전",
     specialties: ["첼로", "클래식"],
     purposes: ["입시", "콩쿨"],
@@ -107,9 +108,9 @@ export default function HomePage() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-white via-white to-stone/60 p-6 shadow-sm">
-        <div className="pointer-events-none absolute -right-16 top-6 h-40 w-40 rounded-full bg-cocoa/20 blur-3xl" />
-        <div className="pointer-events-none absolute -left-10 bottom-6 h-32 w-32 rounded-full bg-ink/15 blur-3xl" />
+      <section className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-white via-white to-stone/60 p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
+        <div className="pointer-events-none absolute -right-16 top-6 h-40 w-40 rounded-full bg-cocoa/20 blur-3xl dark:bg-cocoa/40" />
+        <div className="pointer-events-none absolute -left-10 bottom-6 h-32 w-32 rounded-full bg-ink/15 blur-3xl dark:bg-ink/35" />
         <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Ensemble</p>
@@ -123,15 +124,17 @@ export default function HomePage() {
             <div className="mt-4 flex flex-wrap gap-2 text-xs">
               <span className="rounded-full bg-ink px-3 py-1 text-white">연락처 보호</span>
               <span className="rounded-full bg-cocoa px-3 py-1 text-white">빠른 수락 흐름</span>
-              <span className="rounded-full bg-sand px-3 py-1 text-muted">모바일 최적화</span>
+              <span className="rounded-full bg-sand px-3 py-1 text-muted dark:bg-[#1f1915] dark:text-[#c9bfb6]">
+                모바일 최적화
+              </span>
             </div>
           </div>
           <div className="flex gap-3">
-            <div className="rounded-xl bg-white px-4 py-3 text-center shadow-sm">
+            <div className="rounded-xl bg-white px-4 py-3 text-center shadow-sm dark:bg-[#1a1512]">
               <div className="text-lg font-semibold">24시간</div>
               <div className="text-xs text-muted">평균 응답</div>
             </div>
-            <div className="rounded-xl bg-white px-4 py-3 text-center shadow-sm">
+            <div className="rounded-xl bg-white px-4 py-3 text-center shadow-sm dark:bg-[#1a1512]">
               <div className="text-lg font-semibold">200+</div>
               <div className="text-xs text-muted">예상 매칭</div>
             </div>
@@ -139,7 +142,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-xl font-semibold">반주자 탐색</h2>
@@ -152,7 +155,14 @@ export default function HomePage() {
         <div className="mt-5 grid gap-3 md:grid-cols-5">
           <div className="flex flex-col gap-1">
             <label>지역</label>
-            <input value={region} onChange={(e) => setRegion(e.target.value)} placeholder="예: 서울" />
+            <select value={region} onChange={(e) => setRegion(e.target.value)}>
+              <option value="">전체</option>
+              {regions.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex flex-col gap-1">
             <label>목적</label>
@@ -185,21 +195,29 @@ export default function HomePage() {
           <Link
             key={item.uid}
             href={`/a?uid=${item.uid}`}
-            className="group rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-night/30 hover:shadow-md"
+            className="group rounded-2xl border border-line bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-night/30 hover:shadow-md dark:border-white/10 dark:bg-[#15110f] dark:hover:border-white/30"
           >
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">{item.displayName}</h3>
-              <span className="rounded-full bg-sand px-3 py-1 text-xs text-muted">{item.region}</span>
+              <span className="rounded-full bg-sand px-3 py-1 text-xs text-muted dark:bg-[#1f1915] dark:text-[#c9bfb6]">
+                {item.region}
+              </span>
             </div>
             <p className="mt-2 text-sm text-muted">{item.bio || "소개가 아직 없습니다."}</p>
             <div className="mt-4 flex flex-wrap gap-2 text-xs">
               {item.purposes.map((p) => (
-                <span key={p} className="rounded-full bg-sand px-3 py-1 text-ink">
+                <span
+                  key={p}
+                  className="rounded-full bg-sand px-3 py-1 text-ink dark:bg-[#1f1915] dark:text-[#f4efe9]"
+                >
                   {p}
                 </span>
               ))}
               {item.specialties.map((s) => (
-                <span key={s} className="rounded-full bg-stone px-3 py-1 text-cocoa">
+                <span
+                  key={s}
+                  className="rounded-full bg-stone px-3 py-1 text-cocoa dark:bg-[#120f0d] dark:text-[#d9cfc6]"
+                >
                   {s}
                 </span>
               ))}
@@ -208,12 +226,14 @@ export default function HomePage() {
               <span>
                 {item.priceMin.toLocaleString()}원 ~ {item.priceMax.toLocaleString()}원
               </span>
-              <span className="text-xs font-medium text-muted group-hover:text-cocoa">프로필 보기 →</span>
+              <span className="text-xs font-medium text-muted group-hover:text-cocoa dark:group-hover:text-[#f4efe9]">
+                프로필 보기 →
+              </span>
             </div>
           </Link>
         ))}
         {filtered.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-line bg-white p-6 text-sm text-muted">
+          <div className="rounded-2xl border border-dashed border-line bg-white p-6 text-sm text-muted dark:border-white/10 dark:bg-[#15110f]">
             조건에 맞는 반주자가 없습니다.
           </div>
         )}

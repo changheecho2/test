@@ -15,12 +15,25 @@ body {
     radial-gradient(circle at 20% 80%, rgba(25, 19, 8, 0.12), transparent 45%);
 }
 
+.dark body {
+  @apply bg-[#0f0c0a] text-[#f4efe9];
+  background-image:
+    radial-gradient(circle at top left, rgba(50, 42, 38, 0.35), transparent 45%),
+    radial-gradient(circle at 30% 80%, rgba(25, 19, 8, 0.25), transparent 50%);
+}
+
 main {
   padding-bottom: 96px;
 }
 
 input, select, textarea {
   @apply border border-black/10 rounded-md px-3 py-2 bg-white text-sm;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  @apply border-white/10 bg-[#1a1512] text-[#f4efe9];
 }
 
 label {

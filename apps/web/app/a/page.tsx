@@ -11,7 +11,7 @@ const purposes = ["입시", "공연", "콩쿨", "레슨"];
 const mockAccompanists: Record<string, Accompanist> = {
   "mock-1": {
     uid: "mock-1",
-    displayName: "반주자 A",
+    displayName: "우아한 모차르트",
     region: "서울",
     specialties: ["성악", "뮤지컬"],
     purposes: ["공연", "입시"],
@@ -26,7 +26,7 @@ const mockAccompanists: Record<string, Accompanist> = {
   },
   "mock-2": {
     uid: "mock-2",
-    displayName: "반주자 B",
+    displayName: "담백한 베토벤",
     region: "경기",
     specialties: ["바이올린", "실내악"],
     purposes: ["콩쿨", "레슨"],
@@ -41,7 +41,7 @@ const mockAccompanists: Record<string, Accompanist> = {
   },
   "mock-3": {
     uid: "mock-3",
-    displayName: "반주자 C",
+    displayName: "섬세한 드뷔시",
     region: "부산",
     specialties: ["피아노", "합창"],
     purposes: ["공연", "레슨"],
@@ -56,7 +56,7 @@ const mockAccompanists: Record<string, Accompanist> = {
   },
   "mock-4": {
     uid: "mock-4",
-    displayName: "반주자 D",
+    displayName: "단정한 쇼팽",
     region: "대전",
     specialties: ["첼로", "클래식"],
     purposes: ["입시", "콩쿨"],
@@ -223,7 +223,7 @@ export default function AccompanistPage() {
   if (loading) return <div>로딩 중...</div>;
   if (error) {
     return (
-      <div className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
         <h1 className="text-lg font-semibold">반주자 프로필 미리보기</h1>
         <p className="mt-2 text-sm text-muted">
           주소가 올바르지 않거나 현재는 테스트 데이터만 준비되어 있습니다.
@@ -246,7 +246,7 @@ export default function AccompanistPage() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
         <h1 className="text-2xl font-semibold">{data.displayName}</h1>
         <p className="mt-2 text-sm text-muted">{data.region}</p>
         <div className="mt-4 space-y-3 text-sm">
@@ -283,7 +283,7 @@ export default function AccompanistPage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
         <h2 className="text-lg font-semibold">요청서 보내기</h2>
         <p className="mt-2 text-xs text-muted">
           연락처는 결제 승인 후에만 공개됩니다. 무료 텍스트에 연락처를 입력할 수 없습니다.
