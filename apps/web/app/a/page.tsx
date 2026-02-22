@@ -249,36 +249,45 @@ export default function AccompanistPage() {
       <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
         <h1 className="text-2xl font-semibold">{data.displayName}</h1>
         <p className="mt-2 text-sm text-muted">{data.region}</p>
-        <div className="mt-4 space-y-3 text-sm">
-          <div>
-            <div className="font-semibold">소개</div>
-            <div className="text-muted">{data.bio || "소개가 아직 없습니다."}</div>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1b1512]">
+            <div className="text-xs text-muted">소개</div>
+            <div className="mt-2 text-sm text-muted">{data.bio || "소개가 아직 없습니다."}</div>
           </div>
-          <div>
-            <div className="font-semibold">학력</div>
-            <div className="text-muted">{data.education || "-"}</div>
+          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1b1512]">
+            <div className="text-xs text-muted">가능 일정</div>
+            <div className="mt-2 text-sm text-muted">{data.availableSlots || "협의"}</div>
           </div>
-          <div>
-            <div className="font-semibold">경력</div>
-            <div className="text-muted">{data.experience || "-"}</div>
+          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1b1512]">
+            <div className="text-xs text-muted">학력</div>
+            <div className="mt-2 text-sm text-muted">{data.education || "-"}</div>
           </div>
-          <div>
-            <div className="font-semibold">전문 분야</div>
-            <div className="text-muted">{data.specialties.join(", ")}</div>
+          <div className="rounded-xl border border-line bg-sand p-4 text-sm dark:border-white/10 dark:bg-[#1b1512]">
+            <div className="text-xs text-muted">경력</div>
+            <div className="mt-2 text-sm text-muted">{data.experience || "-"}</div>
           </div>
-          <div>
-            <div className="font-semibold">목적</div>
-            <div className="text-muted">{data.purposes.join(", ")}</div>
-          </div>
-          <div>
-            <div className="font-semibold">비용 범위</div>
-            <div className="text-muted">
+        </div>
+        <div className="mt-4 rounded-xl border border-line bg-white p-4 text-sm dark:border-white/10 dark:bg-[#15110f]">
+          <div className="flex flex-wrap gap-2">
+            {data.purposes.map((p) => (
+              <span
+                key={p}
+                className="rounded-full bg-sand px-3 py-1 text-xs text-ink dark:bg-[#1f1915] dark:text-[#f4efe9]"
+              >
+                {p}
+              </span>
+            ))}
+            {data.specialties.map((s) => (
+              <span
+                key={s}
+                className="rounded-full bg-stone px-3 py-1 text-xs text-cocoa dark:bg-[#120f0d] dark:text-[#d9cfc6]"
+              >
+                {s}
+              </span>
+            ))}
+            <span className="rounded-full bg-sand px-3 py-1 text-xs text-muted dark:bg-[#1f1915] dark:text-[#c9bfb6]">
               {data.priceMin.toLocaleString()}원 ~ {data.priceMax.toLocaleString()}원
-            </div>
-          </div>
-          <div>
-            <div className="font-semibold">가능 일정</div>
-            <div className="text-muted">{data.availableSlots || "협의"}</div>
+            </span>
           </div>
         </div>
       </section>

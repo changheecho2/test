@@ -9,6 +9,7 @@ import { Accompanist, RequestDoc } from "../../lib/types";
 
 export default function DashboardPage() {
   const authClient = getAuthClient();
+  const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === "1";
   const [user, setUser] = useState(authClient?.currentUser ?? null);
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
@@ -16,6 +17,7 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<Accompanist | null>(null);
   const [requests, setRequests] = useState<RequestDoc[]>([]);
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
+  const [testLoggedIn, setTestLoggedIn] = useState(false);
 
   useEffect(() => {
     if (!authClient) return;
@@ -23,6 +25,70 @@ export default function DashboardPage() {
       setUser(current);
     });
   }, [authClient]);
+
+  useEffect(() => {
+    if (!isTestMode || authClient) return;
+    if (!testLoggedIn) return;
+    const mockProfile: Accompanist = {
+      uid: "mock-accompanist",
+      displayName: "우아한 모차르트",
+      region: "서울",
+      specialties: ["성악", "뮤지컬"],
+      purposes: ["공연", "입시"],
+      priceMin: 70000,
+      priceMax: 140000,
+      bio: "오페라와 뮤지컬 중심의 반주 경험이 풍부합니다. 빠른 초견과 템포 조정에 강합니다.",
+      education: "한국예술종합학교",
+      experience: "시립오페라단 객원",
+      portfolioLinks: [],
+      availableSlots: "평일 저녁, 주말 오후",
+      isPublic: true
+    };
+    const mockRequests: RequestDoc[] = [
+      {
+        id: "req-1",
+        accompanistUid: "mock-accompanist",
+        status: "pending",
+        purpose: "공연",
+        instrument: "성악",
+        repertoire: "Schubert Ave Maria",
+        schedule: "3/15 오후 4시",
+        location: "서울",
+        budgetMin: 80000,
+        budgetMax: 120000,
+        options: {
+          sightReading: true,
+          sameDayRehearsal: true,
+          recording: false,
+          provideSheet: true
+        },
+        note: "리허설 1회 포함 부탁드립니다.",
+        contactUnlocked: false
+      },
+      {
+        id: "req-2",
+        accompanistUid: "mock-accompanist",
+        status: "accepted",
+        purpose: "입시",
+        instrument: "바이올린",
+        repertoire: "Bach Partita No.2",
+        schedule: "3/20 오전 10시",
+        location: "온라인",
+        budgetMin: 60000,
+        budgetMax: 90000,
+        options: {
+          sightReading: false,
+          sameDayRehearsal: false,
+          recording: true,
+          provideSheet: false
+        },
+        note: "최종 리허설만 필요합니다.",
+        contactUnlocked: true
+      }
+    ];
+    setProfile(mockProfile);
+    setRequests(mockRequests);
+  }, [isTestMode, authClient, testLoggedIn]);
 
   useEffect(() => {
     if (!user) {
@@ -72,6 +138,10 @@ export default function DashboardPage() {
   const handleAuth = async (mode: "login" | "signup") => {
     setAuthMessage(null);
     try {
+      if (isTestMode && !authClient) {
+        setTestLoggedIn(true);
+        return;
+      }
       if (mode === "signup") {
         if (!authClient) throw new Error("auth not ready");
         await createUserWithEmailAndPassword(authClient, authEmail, authPassword);
@@ -89,6 +159,10 @@ export default function DashboardPage() {
     setProfileMessage(null);
     if (!profile.displayName.trim() || !profile.region.trim()) {
       setProfileMessage("이름과 지역은 필수입니다.");
+      return;
+    }
+    if (isTestMode && !authClient) {
+      setProfileMessage("테스트 모드에서 임시 저장되었습니다.");
       return;
     }
     const db = getDbClient();
@@ -119,7 +193,7 @@ export default function DashboardPage() {
           Firebase 설정이 아직 완료되지 않았습니다. Cloudflare 환경 변수에 Firebase 값을 추가해 주세요.
         </div>
       )}
-      {!user && (
+      {!user && !testLoggedIn && (
         <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
           <h1 className="text-xl font-semibold">반주자 로그인</h1>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -133,24 +207,31 @@ export default function DashboardPage() {
             </div>
           </div>
           {authMessage && <p className="mt-2 text-sm text-rose-600">{authMessage}</p>}
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             <button className="bg-cocoa text-white" onClick={() => handleAuth("login")}>
               로그인
             </button>
             <button className="border border-black/10 bg-white text-cocoa" onClick={() => handleAuth("signup")}>
               회원가입
             </button>
+            {isTestMode && !authClient && (
+              <button className="border border-black/10 bg-white text-ink" onClick={() => handleAuth("login")}>
+                테스트 로그인
+              </button>
+            )}
           </div>
         </section>
       )}
 
-      {user && profile && (
+      {(user || testLoggedIn) && profile && (
         <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-semibold">반주자 프로필</h1>
-            <button className="border border-black/10 text-cocoa" onClick={() => authClient && signOut(authClient)}>
-              로그아웃
-            </button>
+            {!testLoggedIn && (
+              <button className="border border-black/10 text-cocoa" onClick={() => authClient && signOut(authClient)}>
+                로그아웃
+              </button>
+            )}
           </div>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             <div className="flex flex-col gap-1">
@@ -252,6 +333,20 @@ export default function DashboardPage() {
               <label>프로필 공개</label>
             </div>
           </div>
+          <div className="mt-6 grid gap-3 md:grid-cols-3">
+            <div className="rounded-xl border border-line bg-sand px-4 py-3 text-sm dark:border-white/10 dark:bg-[#1b1512]">
+              <div className="text-xs text-muted">평균 응답</div>
+              <div className="text-lg font-semibold">24시간 이내</div>
+            </div>
+            <div className="rounded-xl border border-line bg-sand px-4 py-3 text-sm dark:border-white/10 dark:bg-[#1b1512]">
+              <div className="text-xs text-muted">최근 요청</div>
+              <div className="text-lg font-semibold">{requests.length}건</div>
+            </div>
+            <div className="rounded-xl border border-line bg-sand px-4 py-3 text-sm dark:border-white/10 dark:bg-[#1b1512]">
+              <div className="text-xs text-muted">공개 상태</div>
+              <div className="text-lg font-semibold">{profile.isPublic ? "공개" : "비공개"}</div>
+            </div>
+          </div>
           {profileMessage && <p className="mt-2 text-sm text-rose-600">{profileMessage}</p>}
           <button className="mt-4 bg-cocoa text-white" onClick={saveProfile}>
             프로필 저장
@@ -259,7 +354,7 @@ export default function DashboardPage() {
         </section>
       )}
 
-      {user && (
+      {(user || testLoggedIn) && (
         <section className="rounded-2xl border border-line bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#15110f]">
           <h2 className="text-lg font-semibold">요청서함</h2>
           <div className="mt-4 space-y-3">
