@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /accompanists/{uid} {
+      allow read: if resource.data.isPublic == true || (request.auth != null && request.auth.uid == uid);
+      allow create, update, delete: if request.auth != null && request.auth.uid == uid;
+    }
+
+    match /requests/{id} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.accompanistUid;
+      allow create: if false;
+      allow update, delete: if false;
+    }
+
+    match /requests/{id}/private/{docId} {
+      allow read: if request.auth != null
+        && request.auth.uid == get(/databases/$(database)/documents/requests/$(id)).data.accompanistUid
+        && get(/databases/$(database)/documents/requests/$(id)).data.status == "accepted"
+        && get(/databases/$(database)/documents/requests/$(id)).data.contactUnlocked == true;
+      allow write: if false;
+    }
+  }
+}

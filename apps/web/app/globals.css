@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-stone text-ink;
+}
+
+input, select, textarea {
+  @apply border border-black/10 rounded-md px-3 py-2 bg-white text-sm;
+}
+
+label {
+  @apply text-sm font-medium;
+}
+
+button {
+  @apply rounded-md px-4 py-2 text-sm font-semibold;
+}
