@@ -3,13 +3,14 @@
 import { doc, getDoc } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { useEffect, useState } from "react";
-import { getDbClient, getFunctionsClient } from "../../../lib/firebaseClient";
-import { Accompanist } from "../../../lib/types";
-import { validateNoContact } from "../../../lib/validation";
+import { getDbClient, getFunctionsClient } from "../../lib/firebaseClient";
+import { Accompanist } from "../../lib/types";
+import { validateNoContact } from "../../lib/validation";
 
 const purposes = ["입시", "공연", "콩쿨", "레슨"];
 
-export default function AccompanistPage({ params }: { params: { uid: string } }) {
+export default function AccompanistPage({ searchParams }: { searchParams: { uid?: string } }) {
+  const uid = searchParams.uid;
   const [data, setData] = useState<Accompanist | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,6 +35,11 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
   const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === "1";
 
   useEffect(() => {
+    if (!uid) {
+      setError("반주자 정보를 찾을 수 없습니다.");
+      setLoading(false);
+      return;
+    }
     const fetchData = async () => {
       try {
         const db = getDbClient();
@@ -41,7 +47,7 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
           setError("현재 설정으로 프로필을 불러올 수 없습니다.");
           return;
         }
-        const snap = await getDoc(doc(db, "accompanists", params.uid));
+        const snap = await getDoc(doc(db, "accompanists", uid));
         if (!snap.exists()) {
           setError("해당 반주자를 찾을 수 없습니다.");
           return;
@@ -60,7 +66,7 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
     };
 
     fetchData();
-  }, [params.uid]);
+  }, [uid]);
 
   const validate = () => {
     if (!form.instrument.trim() || !form.repertoire.trim() || !form.schedule.trim() || !form.location.trim()) {
@@ -99,7 +105,7 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
       }
       const callable = httpsCallable(functions, "createRequest");
       await callable({
-        accompanistUid: params.uid,
+        accompanistUid: uid,
         purpose: form.purpose,
         instrument: form.instrument.trim(),
         repertoire: form.repertoire.trim(),
@@ -183,9 +189,7 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
           연락처는 결제 승인 후에만 공개됩니다. 무료 텍스트에 연락처를 입력할 수 없습니다.
         </p>
         {isTestMode && (
-          <p className="mt-1 text-xs text-muted">
-            현재는 테스트 단계로 실제 전송은 되지 않습니다.
-          </p>
+          <p className="mt-1 text-xs text-muted">현재는 테스트 단계로 실제 전송은 되지 않습니다.</p>
         )}
         <div className="mt-4 space-y-3">
           <div className="flex flex-col gap-1">

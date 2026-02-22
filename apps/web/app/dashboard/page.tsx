@@ -266,7 +266,7 @@ export default function DashboardPage() {
             {requests.map((request) => (
               <Link
                 key={request.id}
-                href={`/dashboard/requests/${request.id}`}
+                href={`/dashboard/requests?id=${request.id}`}
                 className="flex items-center justify-between rounded-md border border-black/10 p-4"
               >
                 <div>

@@ -80,7 +80,7 @@ export default function HomePage() {
 
       <section className="grid gap-4 md:grid-cols-2">
         {filtered.map((item) => (
-          <Link key={item.uid} href={`/a/${item.uid}`} className="rounded-xl bg-white p-6 shadow-sm">
+          <Link key={item.uid} href={`/a?uid=${item.uid}`} className="rounded-xl bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">{item.displayName}</h2>
               <span className="text-xs text-muted">{item.region}</span>

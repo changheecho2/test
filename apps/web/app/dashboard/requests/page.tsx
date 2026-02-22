@@ -5,10 +5,11 @@ import { doc, getDoc } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
-import { getAuthClient, getDbClient, getFunctionsClient } from "../../../../lib/firebaseClient";
-import { RequestDoc } from "../../../../lib/types";
+import { getAuthClient, getDbClient, getFunctionsClient } from "../../../lib/firebaseClient";
+import { RequestDoc } from "../../../lib/types";
 
-export default function RequestDetailPage({ params }: { params: { id: string } }) {
+export default function RequestDetailPage({ searchParams }: { searchParams: { id?: string } }) {
+  const requestId = searchParams.id;
   const [userId, setUserId] = useState<string | null>(null);
   const [request, setRequest] = useState<RequestDoc | null>(null);
   const [contact, setContact] = useState<string | null>(null);
@@ -25,7 +26,7 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
   }, []);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !requestId) return;
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -34,14 +35,14 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
           setError("현재 설정으로 요청서를 불러올 수 없습니다.");
           return;
         }
-        const snap = await getDoc(doc(db, "requests", params.id));
+        const snap = await getDoc(doc(db, "requests", requestId));
         if (!snap.exists()) {
           setError("요청서를 찾을 수 없습니다.");
           return;
         }
         setRequest({ id: snap.id, ...(snap.data() as Omit<RequestDoc, "id">) });
         if (snap.data().contactUnlocked) {
-          const privateSnap = await getDoc(doc(db, "requests", params.id, "private", "contact"));
+          const privateSnap = await getDoc(doc(db, "requests", requestId, "private", "contact"));
           if (privateSnap.exists()) {
             setContact(privateSnap.data().email);
           }
@@ -54,10 +55,11 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
     };
 
     fetchData();
-  }, [userId, params.id]);
+  }, [userId, requestId]);
 
   const handleAccept = async () => {
     setMessage(null);
+    if (!requestId) return;
     try {
       const functions = getFunctionsClient();
       if (!functions) {
@@ -65,7 +67,7 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
         return;
       }
       const callable = httpsCallable(functions, "createCheckoutSession");
-      const res = await callable({ requestId: params.id });
+      const res = await callable({ requestId });
       const data = res.data as any;
       if (data?.mode === "mock") {
         setMessage("테스트 결제로 즉시 수락되었습니다.");
@@ -74,11 +76,11 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
           setMessage("현재 설정으로 요청서를 불러올 수 없습니다.");
           return;
         }
-        const snap = await getDoc(doc(db, "requests", params.id));
+        const snap = await getDoc(doc(db, "requests", requestId));
         if (snap.exists()) {
           setRequest({ id: snap.id, ...(snap.data() as Omit<RequestDoc, "id">) });
           if (snap.data().contactUnlocked) {
-            const privateSnap = await getDoc(doc(db, "requests", params.id, "private", "contact"));
+            const privateSnap = await getDoc(doc(db, "requests", requestId, "private", "contact"));
             if (privateSnap.exists()) {
               setContact(privateSnap.data().email);
             }
@@ -97,6 +99,7 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
 
   const handleReject = async () => {
     setMessage(null);
+    if (!requestId) return;
     try {
       const functions = getFunctionsClient();
       if (!functions) {
@@ -104,13 +107,14 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
         return;
       }
       const callable = httpsCallable(functions, "rejectRequest");
-      await callable({ requestId: params.id });
+      await callable({ requestId });
       setMessage("요청서를 거절했습니다.");
     } catch (err: any) {
       setMessage("거절 처리에 실패했습니다.");
     }
   };
 
+  if (!requestId) return <div>요청서 정보를 찾을 수 없습니다.</div>;
   if (!userId) return <div>로그인이 필요합니다.</div>;
   if (error) return <div>{error}</div>;
   if (loading || !request) return <div>로딩 중...</div>;
