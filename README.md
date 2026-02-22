@@ -72,12 +72,17 @@ Firebase CLI로 배포/에뮬레이터 실행을 진행하세요.
 firebase deploy --only firestore:rules
 ```
 
-## Stripe 설정
+## 결제 설정
+
+현재는 **테스트 모드(가라 결제)** 가 기본값입니다.
+`PAYMENT_MODE=mock`이면 결제 없이 즉시 수락됩니다.
+
+Stripe를 연결하려면 아래 설정을 추가합니다.
 
 1. Stripe 대시보드에서 Webhook 엔드포인트 생성
 2. 이벤트: `checkout.session.completed`
 3. Webhook 시크릿을 `STRIPE_WEBHOOK_SECRET`로 등록
-4. Functions 배포
+4. `PAYMENT_MODE=stripe`로 변경 후 Functions 배포
 
 ```
 firebase deploy --only functions

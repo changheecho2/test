@@ -14,6 +14,7 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
   const [contact, setContact] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     return onAuthStateChanged(auth, (user) => {
@@ -24,6 +25,7 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
   useEffect(() => {
     if (!userId) return;
     const fetchData = async () => {
+      setLoading(true);
       try {
         const snap = await getDoc(doc(db, "requests", params.id));
         if (!snap.exists()) {
@@ -39,6 +41,8 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
         }
       } catch (err) {
         setError("요청서를 불러올 수 없습니다.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -50,7 +54,22 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
     try {
       const callable = httpsCallable(functions, "createCheckoutSession");
       const res = await callable({ requestId: params.id });
-      const sessionId = (res.data as any).sessionId as string;
+      const data = res.data as any;
+      if (data?.mode === "mock") {
+        setMessage("테스트 결제로 즉시 수락되었습니다.");
+        const snap = await getDoc(doc(db, "requests", params.id));
+        if (snap.exists()) {
+          setRequest({ id: snap.id, ...(snap.data() as Omit<RequestDoc, "id">) });
+          if (snap.data().contactUnlocked) {
+            const privateSnap = await getDoc(doc(db, "requests", params.id, "private", "contact"));
+            if (privateSnap.exists()) {
+              setContact(privateSnap.data().email);
+            }
+          }
+        }
+        return;
+      }
+      const sessionId = data.sessionId as string;
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "");
       if (!stripe) throw new Error("Stripe 초기화 실패");
       await stripe.redirectToCheckout({ sessionId });
@@ -72,7 +91,7 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
 
   if (!userId) return <div>로그인이 필요합니다.</div>;
   if (error) return <div>{error}</div>;
-  if (!request) return <div>로딩 중...</div>;
+  if (loading || !request) return <div>로딩 중...</div>;
 
   return (
     <div className="rounded-xl bg-white p-6 shadow-sm space-y-4">
@@ -132,6 +151,7 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
           {request.contactUnlocked ? contact || "연락처 로딩 중..." : "결제 완료 후 공개됩니다."}
         </div>
       </div>
+      <p className="text-xs text-muted">테스트 모드에서는 결제 없이 즉시 수락됩니다.</p>
       {message && <p className="text-sm text-rose-600">{message}</p>}
       {request.status === "pending" && (
         <div className="flex gap-2">

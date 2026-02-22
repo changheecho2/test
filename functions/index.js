@@ -6,6 +6,7 @@ admin.initializeApp();
 
 const region = process.env.FUNCTIONS_REGION || "asia-northeast3";
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "";
+const paymentMode = (process.env.PAYMENT_MODE || "mock").toLowerCase();
 const stripe = new Stripe(stripeSecretKey, { apiVersion: "2024-06-20" });
 
 const contactPatterns = [
@@ -118,9 +119,6 @@ exports.createCheckoutSession = functions.region(region).https.onCall(async (dat
   if (!context.auth) {
     throw new functions.https.HttpsError("unauthenticated", "로그인이 필요합니다.");
   }
-  if (!stripeSecretKey) {
-    throw new functions.https.HttpsError("failed-precondition", "Stripe 비밀키 설정이 필요합니다.");
-  }
 
   const requestId = requireString(data.requestId, "requestId");
   const requestRef = admin.firestore().doc(`requests/${requestId}`);
@@ -136,6 +134,19 @@ exports.createCheckoutSession = functions.region(region).https.onCall(async (dat
   }
   if (requestData.status !== "pending") {
     throw new functions.https.HttpsError("failed-precondition", "이미 처리된 요청입니다.");
+  }
+
+  if (paymentMode === "mock") {
+    await requestRef.update({
+      status: "accepted",
+      contactUnlocked: true,
+      paidAt: admin.firestore.FieldValue.serverTimestamp()
+    });
+    return { mode: "mock" };
+  }
+
+  if (!stripeSecretKey) {
+    throw new functions.https.HttpsError("failed-precondition", "Stripe 비밀키 설정이 필요합니다.");
   }
 
   const successUrl = process.env.STRIPE_SUCCESS_URL;
@@ -202,6 +213,10 @@ exports.rejectRequest = functions.region(region).https.onCall(async (data, conte
 });
 
 exports.stripeWebhook = functions.region(region).https.onRequest(async (req, res) => {
+  if (paymentMode === "mock") {
+    res.json({ received: true, mode: "mock" });
+    return;
+  }
   const signature = req.headers["stripe-signature"];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!endpointSecret) {
