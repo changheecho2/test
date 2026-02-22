@@ -69,6 +69,11 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
       const data = res.data as any;
       if (data?.mode === "mock") {
         setMessage("테스트 결제로 즉시 수락되었습니다.");
+        const db = getDbClient();
+        if (!db) {
+          setMessage("현재 설정으로 요청서를 불러올 수 없습니다.");
+          return;
+        }
         const snap = await getDoc(doc(db, "requests", params.id));
         if (snap.exists()) {
           setRequest({ id: snap.id, ...(snap.data() as Omit<RequestDoc, "id">) });
