@@ -5,8 +5,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
-import { auth, db, functions } from "../../../lib/firebaseClient";
-import { RequestDoc } from "../../../lib/types";
+import { auth, db, functions } from "../../../../lib/firebaseClient";
+import { RequestDoc } from "../../../../lib/types";
 
 export default function RequestDetailPage({ params }: { params: { id: string } }) {
   const [userId, setUserId] = useState<string | null>(null);
