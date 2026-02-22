@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/" className="rounded-full border border-line bg-white px-4 py-2">
                 반주자 찾기
               </Link>
-              <Link href="/dashboard" className="rounded-full bg-ink px-4 py-2 text-white">
+              <Link href="/dashboard" className="rounded-full bg-cocoa px-4 py-2 text-white">
                 반주자 대시보드
               </Link>
             </nav>
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="text-xs font-semibold text-ink">
               반주자 찾기
             </Link>
-            <Link href="/dashboard" className="rounded-full bg-ink px-4 py-2 text-xs font-semibold text-white">
+            <Link href="/dashboard" className="rounded-full bg-cocoa px-4 py-2 text-xs font-semibold text-white">
               대시보드
             </Link>
           </div>

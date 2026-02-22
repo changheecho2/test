@@ -10,8 +10,9 @@
 
 body {
   @apply bg-stone text-ink font-body;
-  background-image: radial-gradient(circle at top left, rgba(30, 76, 235, 0.12), transparent 40%),
-    radial-gradient(circle at 20% 80%, rgba(17, 24, 39, 0.06), transparent 45%);
+  background-image:
+    radial-gradient(circle at top left, rgba(50, 42, 38, 0.16), transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(25, 19, 8, 0.12), transparent 45%);
 }
 
 main {

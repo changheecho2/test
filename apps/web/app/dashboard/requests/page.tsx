@@ -187,7 +187,7 @@ export default function RequestDetailPage() {
       {message && <p className="text-sm text-rose-600">{message}</p>}
       {request.status === "pending" && (
         <div className="flex gap-2">
-          <button className="bg-ink text-white" onClick={handleAccept}>
+          <button className="bg-cocoa text-white" onClick={handleAccept}>
             수락하기 (1만원 결제)
           </button>
           <button className="border border-black/10" onClick={handleReject}>

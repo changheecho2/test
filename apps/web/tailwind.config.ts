@@ -9,14 +9,12 @@ const config: Config = {
         body: ["\"Noto Sans KR\"", "sans-serif"]
       },
       colors: {
-        ink: "#0E0F13",
-        stone: "#F6F1EA",
-        accent: "#1E4CEB",
-        accentSoft: "#DDE5FF",
-        sand: "#FDFBF7",
-        muted: "#6B7280",
-        line: "#E4DED6",
-        night: "#111827"
+        ink: "#191308",
+        cocoa: "#322A26",
+        stone: "#F2EEE9",
+        sand: "#FBF8F3",
+        muted: "#6B6460",
+        line: "#E6DED4"
       }
     }
   },

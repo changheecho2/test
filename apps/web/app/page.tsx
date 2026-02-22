@@ -107,9 +107,9 @@ export default function HomePage() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-white via-white to-accentSoft/70 p-6 shadow-sm">
-        <div className="pointer-events-none absolute -right-16 top-6 h-40 w-40 rounded-full bg-accent/20 blur-3xl" />
-        <div className="pointer-events-none absolute -left-10 bottom-6 h-32 w-32 rounded-full bg-night/10 blur-3xl" />
+      <section className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-white via-white to-stone/60 p-6 shadow-sm">
+        <div className="pointer-events-none absolute -right-16 top-6 h-40 w-40 rounded-full bg-cocoa/20 blur-3xl" />
+        <div className="pointer-events-none absolute -left-10 bottom-6 h-32 w-32 rounded-full bg-ink/15 blur-3xl" />
         <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Ensemble</p>
@@ -121,8 +121,8 @@ export default function HomePage() {
               공개됩니다. 빠른 매칭을 위해 응답 속도와 전문 분야를 함께 보여드립니다.
             </p>
             <div className="mt-4 flex flex-wrap gap-2 text-xs">
-              <span className="rounded-full bg-night px-3 py-1 text-white">연락처 보호</span>
-              <span className="rounded-full bg-accent px-3 py-1 text-white">빠른 수락 흐름</span>
+              <span className="rounded-full bg-ink px-3 py-1 text-white">연락처 보호</span>
+              <span className="rounded-full bg-cocoa px-3 py-1 text-white">빠른 수락 흐름</span>
               <span className="rounded-full bg-sand px-3 py-1 text-muted">모바일 최적화</span>
             </div>
           </div>
@@ -194,12 +194,12 @@ export default function HomePage() {
             <p className="mt-2 text-sm text-muted">{item.bio || "소개가 아직 없습니다."}</p>
             <div className="mt-4 flex flex-wrap gap-2 text-xs">
               {item.purposes.map((p) => (
-                <span key={p} className="rounded-full bg-accentSoft px-3 py-1 text-ink">
+                <span key={p} className="rounded-full bg-sand px-3 py-1 text-ink">
                   {p}
                 </span>
               ))}
               {item.specialties.map((s) => (
-                <span key={s} className="rounded-full bg-stone px-3 py-1">
+                <span key={s} className="rounded-full bg-stone px-3 py-1 text-cocoa">
                   {s}
                 </span>
               ))}
@@ -208,7 +208,7 @@ export default function HomePage() {
               <span>
                 {item.priceMin.toLocaleString()}원 ~ {item.priceMax.toLocaleString()}원
               </span>
-              <span className="text-xs font-medium text-muted group-hover:text-ink">프로필 보기 →</span>
+              <span className="text-xs font-medium text-muted group-hover:text-cocoa">프로필 보기 →</span>
             </div>
           </Link>
         ))}

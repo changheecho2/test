@@ -134,10 +134,10 @@ export default function DashboardPage() {
           </div>
           {authMessage && <p className="mt-2 text-sm text-rose-600">{authMessage}</p>}
           <div className="mt-4 flex gap-2">
-            <button className="bg-ink text-white" onClick={() => handleAuth("login")}>
+            <button className="bg-cocoa text-white" onClick={() => handleAuth("login")}>
               로그인
             </button>
-            <button className="border border-black/10 bg-white" onClick={() => handleAuth("signup")}>
+            <button className="border border-black/10 bg-white text-cocoa" onClick={() => handleAuth("signup")}>
               회원가입
             </button>
           </div>
@@ -148,7 +148,7 @@ export default function DashboardPage() {
         <section className="rounded-2xl border border-line bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-semibold">반주자 프로필</h1>
-            <button className="border border-black/10" onClick={() => authClient && signOut(authClient)}>
+            <button className="border border-black/10 text-cocoa" onClick={() => authClient && signOut(authClient)}>
               로그아웃
             </button>
           </div>
@@ -253,7 +253,7 @@ export default function DashboardPage() {
             </div>
           </div>
           {profileMessage && <p className="mt-2 text-sm text-rose-600">{profileMessage}</p>}
-          <button className="mt-4 bg-ink text-white" onClick={saveProfile}>
+          <button className="mt-4 bg-cocoa text-white" onClick={saveProfile}>
             프로필 저장
           </button>
         </section>

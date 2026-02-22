@@ -414,7 +414,7 @@ export default function AccompanistPage() {
             />
           </div>
           {submitMessage && <p className="text-sm text-rose-600">{submitMessage}</p>}
-          <button className="w-full bg-ink text-white" onClick={submit}>
+          <button className="w-full bg-cocoa text-white" onClick={submit}>
             요청서 제출
           </button>
         </div>
