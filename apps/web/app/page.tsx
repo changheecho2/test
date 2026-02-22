@@ -108,9 +108,9 @@ export default function HomePage() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-white via-white to-stone/60 p-6 shadow-sm dark:border-white/10 dark:bg-[#0f0b09]">
-        <div className="pointer-events-none absolute -right-16 top-6 h-40 w-40 rounded-full bg-cocoa/20 blur-3xl dark:bg-[#b08a6b]/45" />
-        <div className="pointer-events-none absolute -left-10 bottom-6 h-32 w-32 rounded-full bg-ink/15 blur-3xl dark:bg-ink/45" />
+      <section className="relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-white via-white to-stone/60 p-6 shadow-sm dark:border-white/10 dark:bg-gradient-to-br dark:from-[#120d0a] dark:via-[#17120f] dark:to-[#0b0806]">
+        <div className="pointer-events-none absolute -right-16 top-6 h-40 w-40 rounded-full bg-cocoa/20 blur-3xl dark:bg-[#2a201a]/70" />
+        <div className="pointer-events-none absolute -left-10 bottom-6 h-32 w-32 rounded-full bg-ink/15 blur-3xl dark:bg-[#0b0806]/80" />
         <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Ensemble</p>
