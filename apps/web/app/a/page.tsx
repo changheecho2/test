@@ -9,8 +9,8 @@ import { validateNoContact } from "../../lib/validation";
 
 const purposes = ["입시", "공연", "콩쿨", "레슨"];
 
-export default function AccompanistPage({ searchParams }: { searchParams: { uid?: string } }) {
-  const uid = searchParams.uid;
+export default function AccompanistPage() {
+  const [uid, setUid] = useState<string | null>(null);
   const [data, setData] = useState<Accompanist | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +33,12 @@ export default function AccompanistPage({ searchParams }: { searchParams: { uid?
     contactEmail: ""
   });
   const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === "1";
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    setUid(params.get("uid"));
+  }, []);
 
   useEffect(() => {
     if (!uid) {

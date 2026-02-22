@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import { getAuthClient, getDbClient, getFunctionsClient } from "../../../lib/firebaseClient";
 import { RequestDoc } from "../../../lib/types";
 
-export default function RequestDetailPage({ searchParams }: { searchParams: { id?: string } }) {
-  const requestId = searchParams.id;
+export default function RequestDetailPage() {
+  const [requestId, setRequestId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [request, setRequest] = useState<RequestDoc | null>(null);
   const [contact, setContact] = useState<string | null>(null);
@@ -23,6 +23,12 @@ export default function RequestDetailPage({ searchParams }: { searchParams: { id
     return onAuthStateChanged(authClient, (user) => {
       setUserId(user?.uid || null);
     });
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    setRequestId(params.get("id"));
   }, []);
 
   useEffect(() => {
