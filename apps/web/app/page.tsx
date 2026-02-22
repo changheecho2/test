@@ -10,7 +10,7 @@ const purposes = ["입시", "공연", "콩쿨", "레슨"];
 const mockAccompanists: Accompanist[] = [
   {
     uid: "mock-1",
-    displayName: "서윤아",
+    displayName: "반주자 A",
     region: "서울",
     specialties: ["성악", "뮤지컬"],
     purposes: ["공연", "입시"],
@@ -25,7 +25,7 @@ const mockAccompanists: Accompanist[] = [
   },
   {
     uid: "mock-2",
-    displayName: "윤하린",
+    displayName: "반주자 B",
     region: "경기",
     specialties: ["바이올린", "실내악"],
     purposes: ["콩쿨", "레슨"],
@@ -40,7 +40,7 @@ const mockAccompanists: Accompanist[] = [
   },
   {
     uid: "mock-3",
-    displayName: "정민지",
+    displayName: "반주자 C",
     region: "부산",
     specialties: ["피아노", "합창"],
     purposes: ["공연", "레슨"],
@@ -55,7 +55,7 @@ const mockAccompanists: Accompanist[] = [
   },
   {
     uid: "mock-4",
-    displayName: "홍지운",
+    displayName: "반주자 D",
     region: "대전",
     specialties: ["첼로", "클래식"],
     purposes: ["입시", "콩쿨"],

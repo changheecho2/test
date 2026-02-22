@@ -11,7 +11,7 @@ const purposes = ["입시", "공연", "콩쿨", "레슨"];
 const mockAccompanists: Record<string, Accompanist> = {
   "mock-1": {
     uid: "mock-1",
-    displayName: "서윤아",
+    displayName: "반주자 A",
     region: "서울",
     specialties: ["성악", "뮤지컬"],
     purposes: ["공연", "입시"],
@@ -26,7 +26,7 @@ const mockAccompanists: Record<string, Accompanist> = {
   },
   "mock-2": {
     uid: "mock-2",
-    displayName: "윤하린",
+    displayName: "반주자 B",
     region: "경기",
     specialties: ["바이올린", "실내악"],
     purposes: ["콩쿨", "레슨"],
@@ -41,7 +41,7 @@ const mockAccompanists: Record<string, Accompanist> = {
   },
   "mock-3": {
     uid: "mock-3",
-    displayName: "정민지",
+    displayName: "반주자 C",
     region: "부산",
     specialties: ["피아노", "합창"],
     purposes: ["공연", "레슨"],
@@ -56,7 +56,7 @@ const mockAccompanists: Record<string, Accompanist> = {
   },
   "mock-4": {
     uid: "mock-4",
-    displayName: "홍지운",
+    displayName: "반주자 D",
     region: "대전",
     specialties: ["첼로", "클래식"],
     purposes: ["입시", "콩쿨"],
@@ -99,15 +99,17 @@ export default function AccompanistPage() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
-    setUid(params.get("uid"));
-  }, []);
-
-  useEffect(() => {
-    if (!uid) {
+    const value = params.get("uid");
+    if (!value) {
       setError("반주자 정보를 찾을 수 없습니다.");
       setLoading(false);
       return;
     }
+    setUid(value);
+  }, []);
+
+  useEffect(() => {
+    if (!uid) return;
     const fetchData = async () => {
       try {
         const db = getDbClient();
@@ -219,7 +221,27 @@ export default function AccompanistPage() {
   };
 
   if (loading) return <div>로딩 중...</div>;
-  if (error) return <div>{error}</div>;
+  if (error) {
+    return (
+      <div className="rounded-2xl border border-line bg-white p-6 shadow-sm">
+        <h1 className="text-lg font-semibold">반주자 프로필 미리보기</h1>
+        <p className="mt-2 text-sm text-muted">
+          주소가 올바르지 않거나 현재는 테스트 데이터만 준비되어 있습니다.
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          {Object.values(mockAccompanists).map((item) => (
+            <a
+              key={item.uid}
+              href={`/a?uid=${item.uid}`}
+              className="rounded-xl border border-line bg-sand px-4 py-3 text-sm"
+            >
+              {item.displayName} · {item.region} · {item.specialties.join(", ")}
+            </a>
+          ))}
+        </div>
+      </div>
+    );
+  }
   if (!data) return null;
 
   return (
