@@ -3,7 +3,7 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { db } from "../lib/firebaseClient";
+import { getDbClient } from "../lib/firebaseClient";
 import { Accompanist } from "../lib/types";
 
 const purposes = ["입시", "공연", "콩쿨", "레슨"];
@@ -18,6 +18,8 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const db = getDbClient();
+      if (!db) return;
       const q = query(collection(db, "accompanists"), where("isPublic", "==", true));
       const snap = await getDocs(q);
       const data = snap.docs.map((doc) => ({ uid: doc.id, ...(doc.data() as Omit<Accompanist, "uid">) }));

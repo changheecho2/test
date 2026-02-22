@@ -4,11 +4,12 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, where } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { auth, db } from "../../lib/firebaseClient";
+import { getAuthClient, getDbClient } from "../../lib/firebaseClient";
 import { Accompanist, RequestDoc } from "../../lib/types";
 
 export default function DashboardPage() {
-  const [user, setUser] = useState(auth.currentUser);
+  const authClient = getAuthClient();
+  const [user, setUser] = useState(authClient?.currentUser ?? null);
   const [authEmail, setAuthEmail] = useState("");
   const [authPassword, setAuthPassword] = useState("");
   const [authMessage, setAuthMessage] = useState<string | null>(null);
@@ -17,10 +18,11 @@ export default function DashboardPage() {
   const [profileMessage, setProfileMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    return onAuthStateChanged(auth, (current) => {
+    if (!authClient) return;
+    return onAuthStateChanged(authClient, (current) => {
       setUser(current);
     });
-  }, []);
+  }, [authClient]);
 
   useEffect(() => {
     if (!user) {
@@ -30,6 +32,8 @@ export default function DashboardPage() {
     }
 
     const fetchProfile = async () => {
+      const db = getDbClient();
+      if (!db) return;
       const snap = await getDoc(doc(db, "accompanists", user.uid));
       if (snap.exists()) {
         setProfile({ uid: snap.id, ...(snap.data() as Omit<Accompanist, "uid">) });
@@ -53,6 +57,8 @@ export default function DashboardPage() {
     };
 
     const fetchRequests = async () => {
+      const db = getDbClient();
+      if (!db) return;
       const q = query(collection(db, "requests"), where("accompanistUid", "==", user.uid));
       const snap = await getDocs(q);
       const items = snap.docs.map((doc) => ({ id: doc.id, ...(doc.data() as Omit<RequestDoc, "id">) }));
@@ -67,9 +73,11 @@ export default function DashboardPage() {
     setAuthMessage(null);
     try {
       if (mode === "signup") {
-        await createUserWithEmailAndPassword(auth, authEmail, authPassword);
+        if (!authClient) throw new Error("auth not ready");
+        await createUserWithEmailAndPassword(authClient, authEmail, authPassword);
       } else {
-        await signInWithEmailAndPassword(auth, authEmail, authPassword);
+        if (!authClient) throw new Error("auth not ready");
+        await signInWithEmailAndPassword(authClient, authEmail, authPassword);
       }
     } catch (err: any) {
       setAuthMessage("로그인/회원가입에 실패했습니다.");
@@ -83,6 +91,8 @@ export default function DashboardPage() {
       setProfileMessage("이름과 지역은 필수입니다.");
       return;
     }
+    const db = getDbClient();
+    if (!db) return;
     await setDoc(doc(db, "accompanists", user.uid), {
       displayName: profile.displayName.trim(),
       region: profile.region.trim(),
@@ -104,6 +114,11 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      {!authClient && (
+        <div className="rounded-xl bg-white p-4 text-sm text-muted">
+          Firebase 설정이 아직 완료되지 않았습니다. Cloudflare 환경 변수에 Firebase 값을 추가해 주세요.
+        </div>
+      )}
       {!user && (
         <section className="rounded-xl bg-white p-6 shadow-sm">
           <h1 className="text-xl font-semibold">반주자 로그인</h1>
@@ -133,7 +148,7 @@ export default function DashboardPage() {
         <section className="rounded-xl bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-semibold">반주자 프로필</h1>
-            <button className="border border-black/10" onClick={() => signOut(auth)}>
+            <button className="border border-black/10" onClick={() => authClient && signOut(authClient)}>
               로그아웃
             </button>
           </div>

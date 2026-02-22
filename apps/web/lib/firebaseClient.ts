@@ -12,8 +12,25 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
-const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+const isBrowser = typeof window !== "undefined";
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const functions = getFunctions(app, process.env.NEXT_PUBLIC_FUNCTIONS_REGION || "asia-northeast3");
+function getFirebaseApp() {
+  if (!isBrowser) return null;
+  if (!firebaseConfig.apiKey) return null;
+  return getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+}
+
+export function getAuthClient() {
+  const app = getFirebaseApp();
+  return app ? getAuth(app) : null;
+}
+
+export function getDbClient() {
+  const app = getFirebaseApp();
+  return app ? getFirestore(app) : null;
+}
+
+export function getFunctionsClient() {
+  const app = getFirebaseApp();
+  return app ? getFunctions(app, process.env.NEXT_PUBLIC_FUNCTIONS_REGION || "asia-northeast3") : null;
+}

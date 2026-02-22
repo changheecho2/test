@@ -5,7 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
-import { auth, db, functions } from "../../../../lib/firebaseClient";
+import { getAuthClient, getDbClient, getFunctionsClient } from "../../../../lib/firebaseClient";
 import { RequestDoc } from "../../../../lib/types";
 
 export default function RequestDetailPage({ params }: { params: { id: string } }) {
@@ -17,7 +17,9 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    return onAuthStateChanged(auth, (user) => {
+    const authClient = getAuthClient();
+    if (!authClient) return;
+    return onAuthStateChanged(authClient, (user) => {
       setUserId(user?.uid || null);
     });
   }, []);
@@ -27,6 +29,11 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
     const fetchData = async () => {
       setLoading(true);
       try {
+        const db = getDbClient();
+        if (!db) {
+          setError("현재 설정으로 요청서를 불러올 수 없습니다.");
+          return;
+        }
         const snap = await getDoc(doc(db, "requests", params.id));
         if (!snap.exists()) {
           setError("요청서를 찾을 수 없습니다.");
@@ -52,6 +59,11 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
   const handleAccept = async () => {
     setMessage(null);
     try {
+      const functions = getFunctionsClient();
+      if (!functions) {
+        setMessage("현재 설정으로 결제를 진행할 수 없습니다.");
+        return;
+      }
       const callable = httpsCallable(functions, "createCheckoutSession");
       const res = await callable({ requestId: params.id });
       const data = res.data as any;
@@ -81,6 +93,11 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
   const handleReject = async () => {
     setMessage(null);
     try {
+      const functions = getFunctionsClient();
+      if (!functions) {
+        setMessage("현재 설정으로 거절 처리할 수 없습니다.");
+        return;
+      }
       const callable = httpsCallable(functions, "rejectRequest");
       await callable({ requestId: params.id });
       setMessage("요청서를 거절했습니다.");

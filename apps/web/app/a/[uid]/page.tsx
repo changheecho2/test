@@ -3,7 +3,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { useEffect, useState } from "react";
-import { db, functions } from "../../../lib/firebaseClient";
+import { getDbClient, getFunctionsClient } from "../../../lib/firebaseClient";
 import { Accompanist } from "../../../lib/types";
 import { validateNoContact } from "../../../lib/validation";
 
@@ -36,6 +36,11 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const db = getDbClient();
+        if (!db) {
+          setError("현재 설정으로 프로필을 불러올 수 없습니다.");
+          return;
+        }
         const snap = await getDoc(doc(db, "accompanists", params.uid));
         if (!snap.exists()) {
           setError("해당 반주자를 찾을 수 없습니다.");
@@ -87,6 +92,11 @@ export default function AccompanistPage({ params }: { params: { uid: string } })
       return;
     }
     try {
+      const functions = getFunctionsClient();
+      if (!functions) {
+        setSubmitMessage("현재 설정으로 요청서를 전송할 수 없습니다.");
+        return;
+      }
       const callable = httpsCallable(functions, "createRequest");
       await callable({
         accompanistUid: params.uid,
